@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đếm Ngược Nghỉ Tết</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(to bottom, #1e90ff, #00bcd4);
+        color: #fff;
+        text-align: center;
+      }
+      .countdown-container {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      .countdown {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .highlight {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #ffeb3b;
+        text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ffc107, 0 0 30px #ff9800;
+        display: inline-block;
+        animation: none;
+      }
+      .highlight.animate {
+        animation: bounce 0.4s ease-in-out;
+      }
+      @keyframes bounce {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .tet {
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: #ff0000;
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff6347, 0 0 30px #ff4500;
+        animation: glow 1s infinite alternate;
+      }
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 10px #e6e2e2, 0 0 20px #b69972, 0 0 30px #dfd5d2;
+        }
+        to {
+          text-shadow: 0 0 20px #c38e7a, 0 0 30px #d49489, 0 0 40px #cd9c9c;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="countdown-container">
+      <div class="countdown">
+        Còn
+        <span class="highlight" id="days">0</span> Ngày
+        <span class="highlight" id="hours">0</span> Giờ
+        <span class="highlight" id="minutes">0</span> Phút
+        <span class="highlight" id="seconds">0</span> Giây
+      </div>
+      <div class="tet">Tết</div>
+    </div>
+
+    <script>
+      let previousValues = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+
+      function updateCountdown() {
+        const targetDate = new Date("2025-01-25T00:00:00").getTime();
+        const now = new Date().getTime();
+        const timeLeft = targetDate - now;
+
+        if (timeLeft > 0) {
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (timeLeft % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+          // Cập nhật các phần tử
+          updateValue("days", days);
+          updateValue("hours", hours);
+          updateValue("minutes", minutes);
+          updateValue("seconds", seconds);
+
+          // Lưu giá trị hiện tại
+          previousValues = { days, hours, minutes, seconds };
+        } else {
+          document.querySelector(".countdown").textContent =
+            "Chúc mừng năm mới!";
+          document.querySelector(".tet").textContent = "Chúc mừng Tết!";
+          clearInterval(timer);
+        }
+      }
+
+      function updateValue(id, newValue) {
+        const element = document.getElementById(id);
+        if (previousValues[id] !== newValue) {
+          element.textContent = newValue;
+          element.classList.remove("animate");
+          void element.offsetWidth; // Reset animation
+          element.classList.add("animate");
+        }
+      }
+
+      const timer = setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // Thêm sự kiện click để điều hướng
+      document.body.addEventListener("click", () => {
+        window.location.href =
+          "https://play.google.com/store/apps/details?id=com.bloody_cotech.bct06";
+      });
+    </script>
+  </body>
+</html>
